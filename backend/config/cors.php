@@ -6,6 +6,10 @@ return [
     'allowed_origins' => [
         'http://localhost:3000',
         'http://127.0.0.1:3000',
+        'https://record-tech.vercel.app',
+    ],
+    'allowed_origins_patterns' => [
+        '#^https://.*\.vercel\.app$#'
     ],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
