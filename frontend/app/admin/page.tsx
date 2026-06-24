@@ -540,7 +540,7 @@ export default function AdminLoginPage() {
                     <Input
                       id="email"
                       type="email"
-                      placeholder="admin@recordtech.com"
+                      placeholder="admin@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="pl-10 h-12 bg-secondary/30 border-border/50 focus:bg-background rounded-xl transition-all"
