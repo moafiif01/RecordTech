@@ -209,6 +209,8 @@ function ServicesManager() {
   const [loading, setLoading] = useState(false)
   const [editingId, setEditingId] = useState<number | null>(null)
   const [formData, setFormData] = useState({ title: '', description: '', icon: 'shield', features: '' })
+  const [serviceToDelete, setServiceToDelete] = useState<number | null>(null)
+  const [isDeletingService, setIsDeletingService] = useState(false)
   
   useEffect(() => {
     loadServices()
@@ -259,13 +261,21 @@ function ServicesManager() {
     }
   }
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm("Supprimer ce service ?")) return
+  const handleDelete = (id: number) => {
+    setServiceToDelete(id)
+  }
+
+  const confirmDeleteService = async () => {
+    if (serviceToDelete === null) return
+    setIsDeletingService(true)
     try {
-      await deleteService(id)
+      await deleteService(serviceToDelete)
+      setServiceToDelete(null)
       loadServices()
     } catch (e) {
       alert("Erreur lors de la suppression")
+    } finally {
+      setIsDeletingService(false)
     }
   }
 
@@ -333,6 +343,33 @@ function ServicesManager() {
           ))}
         </div>
       )}
+
+      {/* Delete Confirmation Modal for Services */}
+      <AlertDialog open={serviceToDelete !== null} onOpenChange={(open) => !open && setServiceToDelete(null)}>
+        <AlertDialogContent className="bg-card border-border/50 shadow-2xl rounded-2xl max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-bold flex items-center gap-2 text-foreground">
+              <Trash2 className="w-5 h-5 text-destructive" />
+              Supprimer le service
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground text-base mt-2">
+              Êtes-vous sûr de vouloir supprimer ce service ? Cette action est irréversible.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-6">
+            <AlertDialogCancel disabled={isDeletingService} className="rounded-xl font-medium border-border/50 hover:bg-secondary">
+              Annuler
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={(e) => { e.preventDefault(); confirmDeleteService(); }} 
+              disabled={isDeletingService}
+              className="rounded-xl font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm"
+            >
+              {isDeletingService ? "Suppression..." : "Supprimer définitivement"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
