@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\HP\Desktop\RecordTech Website\backend\phpunit.xml" tests="5" assertions="11" errors="0" failures="0" skipped="0" time="3.924357">
+    <testsuite name="Feature" tests="5" assertions="11" errors="0" failures="0" skipped="0" time="3.924357">
+      <testsuite name="Tests\Feature\AuthTest" file="C:\Users\HP\Desktop\RecordTech Website\backend\tests\Feature\AuthTest.php" tests="2" assertions="3" errors="0" failures="0" skipped="0" time="2.172361">
+        <testcase name="test_admin_can_login" file="C:\Users\HP\Desktop\RecordTech Website\backend\tests\Feature\AuthTest.php" line="14" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="2" time="1.574700"/>
+        <testcase name="test_invalid_credentials_return_401" file="C:\Users\HP\Desktop\RecordTech Website\backend\tests\Feature\AuthTest.php" line="29" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="1" time="0.597661"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\ContactTest" file="C:\Users\HP\Desktop\RecordTech Website\backend\tests\Feature\ContactTest.php" tests="1" assertions="2" errors="0" failures="0" skipped="0" time="0.395181">
+        <testcase name="test_contact_form_saves_and_sends_mail" file="C:\Users\HP\Desktop\RecordTech Website\backend\tests\Feature\ContactTest.php" line="14" class="Tests\Feature\ContactTest" classname="Tests.Feature.ContactTest" assertions="2" time="0.395181"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\ServiceTest" file="C:\Users\HP\Desktop\RecordTech Website\backend\tests\Feature\ServiceTest.php" tests="2" assertions="6" errors="0" failures="0" skipped="0" time="1.356815">
+        <testcase name="test_public_can_view_services" file="C:\Users\HP\Desktop\RecordTech Website\backend\tests\Feature\ServiceTest.php" line="29" class="Tests\Feature\ServiceTest" classname="Tests.Feature.ServiceTest" assertions="2" time="0.381124"/>
+        <testcase name="test_protected_create_update_delete" file="C:\Users\HP\Desktop\RecordTech Website\backend\tests\Feature\ServiceTest.php" line="36" class="Tests\Feature\ServiceTest" classname="Tests.Feature.ServiceTest" assertions="4" time="0.975692"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

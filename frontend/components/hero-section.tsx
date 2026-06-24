@@ -1,0 +1,93 @@
+import { Button } from "@/components/ui/button"
+import { Shield, Award, Users, Zap } from "lucide-react"
+import Link from "next/link"
+
+export function HeroSection() {
+  return (
+    <section className="relative bg-gradient-to-br from-secondary/10 to-background py-12 lg:py-20">
+      <div className="container mx-auto px-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          {/* Left: text content */}
+          <div className="text-center lg:text-left">
+            <div className="inline-flex items-center bg-accent/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
+              <Shield className="h-4 w-4 mr-2" />
+              RecordTech - Solutions Intégrées
+            </div>
+
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 text-balance">
+              Sécurité, Informatique et
+              <span className="text-primary"> Technologies </span>
+              Professionnelles
+            </h1>
+
+            <p className="text-lg md:text-xl text-muted-foreground mb-6 max-w-2xl">
+              RecordTech offre des solutions complètes en sécurité, systèmes d'alarme, consulting IT, formation
+              informatique et gestion de projets pour protéger et moderniser votre entreprise.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-6">
+              <Link href="/contact">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                  Demander un Devis
+                </Button>
+              </Link>
+              <Link href="/services">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
+                >
+                  Découvrir nos Services
+                </Button>
+              </Link>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              <div className="text-center">
+                <div className="bg-card rounded-lg p-4 shadow-sm">
+                  <Award className="h-6 w-6 text-primary mx-auto mb-1" />
+                  <div className="text-xl font-bold text-foreground">10+</div>
+                  <div className="text-xs text-muted-foreground">Années d'expérience</div>
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="bg-card rounded-lg p-4 shadow-sm">
+                  <Users className="h-6 w-6 text-primary mx-auto mb-1" />
+                  <div className="text-xl font-bold text-foreground">200+</div>
+                  <div className="text-xs text-muted-foreground">Clients satisfaits</div>
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="bg-card rounded-lg p-4 shadow-sm">
+                  <Shield className="h-6 w-6 text-primary mx-auto mb-1" />
+                  <div className="text-xl font-bold text-foreground">500+</div>
+                  <div className="text-xs text-muted-foreground">Projets réalisés</div>
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="bg-card rounded-lg p-4 shadow-sm">
+                  <Zap className="h-6 w-6 text-primary mx-auto mb-1" />
+                  <div className="text-xl font-bold text-foreground">24/7</div>
+                  <div className="text-xs text-muted-foreground">Support client</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: hero image (Option B - split layout) */}
+          <div className="w-full rounded-lg overflow-hidden shadow-lg">
+            {/* Using source.unsplash to load the provided Unsplash photo directly. */}
+            <img
+              src="https://images.unsplash.com/photo-1570044389283-6713c3b1c48b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=387"
+              alt="Caméra de sécurité installée sur mur - RecordTech"
+              className="object-cover w-full h-64 sm:h-80 md:h-96 lg:h-[480px]"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
