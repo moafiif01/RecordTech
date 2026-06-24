@@ -16,20 +16,25 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (!Auth::attempt($data)) {
+        $user = Admin::where('email', $data['email'])->first();
+
+        if (!$user || !Hash::check($data['password'], $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
+        $token = $user->createToken('admin_token')->plainTextToken;
 
-        $request->session()->regenerate();
-
-        return response()->json(['message' => 'Logged in'], 200);
+        return response()->json([
+            'message' => 'Logged in',
+            'token' => $token,
+            'user' => $user
+        ], 200);
     }
 
     public function logout(Request $request)
     {
-        Auth::guard('web')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        if ($request->user()) {
+            $request->user()->currentAccessToken()->delete();
+        }
 
         return response()->json(['message' => 'Logged out'], 200);
     }
