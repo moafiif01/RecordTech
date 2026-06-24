@@ -19,7 +19,6 @@ export function setToken(token: string | null) {
 }
 
 async function fetchWithAuth(url: string, options: RequestInit = {}) {
-  options.credentials = 'include';
   const headers: Record<string, string> = {
     'Accept': 'application/json',
   };
