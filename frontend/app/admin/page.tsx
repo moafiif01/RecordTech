@@ -493,7 +493,6 @@ export default function AdminLoginPage() {
       }
       setAdmin(me)
     } catch (err) {
-      console.error("Login failed with exact error:", err)
       setError("Une erreur est survenue lors de la connexion")
     } finally {
       setIsLoading(false)

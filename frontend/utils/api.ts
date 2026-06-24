@@ -1,11 +1,6 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
 
-function getCookie(name: string) {
-  if (typeof document === 'undefined') return '';
-  const match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
-  return (match ? decodeURIComponent(match[3]) : null);
-}
 
 function getToken() {
   if (typeof localStorage === 'undefined') return null;
@@ -27,14 +22,6 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
     headers['X-Authorization'] = `Bearer ${token}`; // Fallback for Vercel PHP header stripping
-  } else {
-    // Fallback to cookie XSRF if no token exists (for local dev)
-    if (options.method && options.method !== 'GET' && options.method !== 'HEAD') {
-      const xsrf = getCookie('XSRF-TOKEN');
-      if (xsrf) {
-        headers['X-XSRF-TOKEN'] = xsrf;
-      }
-    }
   }
   
   options.headers = { ...headers, ...(options.headers as any) };
@@ -115,11 +102,6 @@ export async function postContact(payload: any) {
 }
 
 export async function loginAdmin(credentials: any) {
-  // Hit CSRF endpoint first to ensure session cookie exists (for local dev)
-  try {
-    await fetch(`${BASE_URL}/sanctum/csrf-cookie`, { method: 'GET', credentials: 'include' });
-  } catch (e) {}
-  
   const data = await fetchWithAuth(`${API_URL}/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
