@@ -7,16 +7,34 @@ function getCookie(name: string) {
   return (match ? decodeURIComponent(match[3]) : null);
 }
 
+function getToken() {
+  if (typeof localStorage === 'undefined') return null;
+  return localStorage.getItem('admin_token');
+}
+
+export function setToken(token: string | null) {
+  if (typeof localStorage === 'undefined') return;
+  if (token) localStorage.setItem('admin_token', token);
+  else localStorage.removeItem('admin_token');
+}
+
 async function fetchWithAuth(url: string, options: RequestInit = {}) {
   options.credentials = 'include';
   const headers: Record<string, string> = {
     'Accept': 'application/json',
   };
   
-  if (options.method && options.method !== 'GET' && options.method !== 'HEAD') {
-    const xsrf = getCookie('XSRF-TOKEN');
-    if (xsrf) {
-      headers['X-XSRF-TOKEN'] = xsrf;
+  const token = getToken();
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+    headers['X-Authorization'] = `Bearer ${token}`; // Fallback for Vercel PHP header stripping
+  } else {
+    // Fallback to cookie XSRF if no token exists (for local dev)
+    if (options.method && options.method !== 'GET' && options.method !== 'HEAD') {
+      const xsrf = getCookie('XSRF-TOKEN');
+      if (xsrf) {
+        headers['X-XSRF-TOKEN'] = xsrf;
+      }
     }
   }
   
@@ -98,13 +116,22 @@ export async function postContact(payload: any) {
 }
 
 export async function loginAdmin(credentials: any) {
-  // Hit CSRF endpoint first to ensure session cookie exists
-  await fetch(`${BASE_URL}/sanctum/csrf-cookie`, { method: 'GET', credentials: 'include' });
-  return fetchWithAuth(`${API_URL}/login`, {
+  // Hit CSRF endpoint first to ensure session cookie exists (for local dev)
+  try {
+    await fetch(`${BASE_URL}/sanctum/csrf-cookie`, { method: 'GET', credentials: 'include' });
+  } catch (e) {}
+  
+  const data = await fetchWithAuth(`${API_URL}/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials),
   });
+  
+  if (data && data.token) {
+    setToken(data.token);
+  }
+  
+  return data;
 }
 
 export async function fetchCurrentAdmin() {
@@ -119,4 +146,5 @@ export async function logoutAdmin() {
   try {
     await fetchWithAuth(`${API_URL}/logout`, { method: 'POST' });
   } catch (e) {}
+  setToken(null);
 }
