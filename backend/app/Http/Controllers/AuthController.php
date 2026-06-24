@@ -11,23 +11,32 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $data = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
+        try {
+            $data = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|string',
+            ]);
 
-        $user = Admin::where('email', $data['email'])->first();
+            $user = Admin::where('email', $data['email'])->first();
 
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            if (!$user || !Hash::check($data['password'], $user->password)) {
+                return response()->json(['message' => 'Invalid credentials'], 401);
+            }
+            
+            $token = $user->createToken('admin_token')->plainTextToken;
+
+            return response()->json([
+                'message' => 'Logged in',
+                'token' => $token,
+                'user' => $user
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Server Error: ' . $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ], 500);
         }
-        $token = $user->createToken('admin_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Logged in',
-            'token' => $token,
-            'user' => $user
-        ], 200);
     }
 
     public function logout(Request $request)
